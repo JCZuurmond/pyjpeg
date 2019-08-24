@@ -1,7 +1,9 @@
 import numpy as np
 import pytest
+from scipy import fftpack
 
 from pyjpeg import pyjpeg
+
 
 @pytest.fixture
 def g():
@@ -59,3 +61,28 @@ def test_idct_raises_value_error_wrong_patch_size():
 
 def test_dct_wikipedia_example(g, G):
     assert (pyjpeg.dct(g) - G < 1e-2).all()
+
+
+def test_idct_dct_wikipedia_example(g):
+    np.testing.assert_array_almost_equal(pyjpeg.idct(pyjpeg.dct(g)), g)
+
+
+def test_scipy_dct_same_as_pyjpeg_dct_wikipedia_example(g):
+    np.testing.assert_array_almost_equal(
+        pyjpeg.dct(g),
+        fftpack.dctn(g, norm='ortho')
+    )
+
+
+def test_scipy_idct_same_as_pyjpeg_dct_wikipedia_example(G):
+    np.testing.assert_array_almost_equal(
+        pyjpeg.idct(G),
+        fftpack.idctn(G, norm='ortho')
+    )
+
+
+def test_scipy_idct_dct_same_as_pyjpeg_idct_dct_wikipedia_example(g):
+    np.testing.assert_array_almost_equal(
+        pyjpeg.idct(pyjpeg.dct(g)),
+        fftpack.idctn(fftpack.dctn(g, norm='ortho'), norm='ortho')
+    )

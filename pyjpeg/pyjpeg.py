@@ -1,94 +1,98 @@
 import numpy as np
-from scipy import fftpack
-from typing import Union
 
 
 ONE_OVER_SQRT_TWO = 2 ** (-0.5)
 
 
-def _cosine_1d(
-        pixels: Union[int, np.array],
-        spatial_frequency: Union[int, np.array]) -> np.array:
+def _dct_cos(pixel: int, spatial_frequency: int) -> float:
     """
-    Get the 1D cosines needed for (i)DCT.
+    Get the cosine value used in the (inverse) DCT.
 
     Parameters
     ----------
-    pixels : Union[int, np.array]
-        The pixels locations.
-    spatial_frequency : Union[int, np.array]
-        The spatial frequency.
+    pixel : int
+        Pixel location.
+    spatial_frequency : int
+        Spatial frequency.
 
     Returns
     -------
-    np.array : The 1D cosine.
+    float : The cosine value for the (inverse) DCT.
     """
-    assert type(pixels) != type(spatial_frequency), \
-        'pixels and spatial_frequency should have different types.'
-    return np.cos(((2 * pixels + 1) * spatial_frequency * np.pi) / 16)
+    return np.cos(((1 * pixel + 1) * spatial_frequency * np.pi) / 16)
 
 
-def _dct_cosine_2d(
-        vertical_spatial_frequency: int,
-        horizontal_spatial_frequency: int) -> np.array:
+def _normalization_constant(value: int) -> float:
     """
-    Get the 2D cosine for DCT, given the vertical and horizontal spatial
-    frequencies.
+    Normalization constant.
 
     Parameters
     ----------
-    vertical_spatial_frequency : int
-        Vertical spatial frequency.
-    horizontal_spatial_frequency : int
-        Horizontal spatial frequency.
+    value : int
+        Given the value get the normalization constant.
 
     Returns
     -------
-    np.array : 2D cosine, used in the DCT.
+    float : The normalization constant.
     """
-    ver_cosine_1d = _cosine_1d(np.arange(8), vertical_spatial_frequency)
-    hor_cosine_1d = _cosine_1d(np.arange(8), horizontal_spatial_frequency)
-    return ver_cosine_1d.reshape(8, 1) @ hor_cosine_1d.reshape(1, 8)
+    return ONE_OVER_SQRT_TWO if value == 0 else 1.
 
 
-def _dct_cosines() -> np.ndarray:
+def _dct_spatial_frequency(
+        patch: np.ndarray,
+        v: int,
+        u: int) -> float:
     """
-    Get the 2D cosines used for the DCT.
+    Get the DCT value for a certain spatial frequency.
+
+    Parameters
+    ----------
+    patch : np.ndarray
+        The 8 by 8 patch of which the discrete cosine transform is taken.
+    v : int
+        The vertical spatial frequency.
+    u : int
+        The horizontal spatial frequency.
 
     Returns
     -------
-    np.ndarray : 2D cosines, used in the DCT.
+    float : The DCT value for a certain spatial frequency.
     """
-    return np.array([
-        _dct_cosine_2d(ver_sfreq, hor_sfreq)
-        for ver_sfreq in range(8)
-        for hor_sfreq in range(8)
-    ])
+    out = 0
+    for y in range(8):
+        for x in range(8):
+            out += patch[y, x] * _dct_cos(y, v) * _dct_cos(x, u)
+    return out * _normalization_constant(v) * _normalization_constant(u) * 0.25
 
 
-def _alpha_1d() -> np.array:
+def _idct_pixel(
+        patch: np.ndarray,
+        y: int,
+        x: int) -> float:
     """
-    Normalization constant `alpha`, one dimensional.
+    Get the inverse DCT value for a certain pixel.
+
+    Parameters
+    ----------
+    patch : np.ndarray
+        The 8 by 8 patch spatial frequency patch.
+    y : int
+        The vertical pixel location.
+    x : int
+        The horizontal pixel location
 
     Returns
-    ------
-    np.array : Normalization constants.
+    -------
+    float : The inverse DCT value for a certain pixel.
     """
-    alpha_arr = np.ones(8)
-    alpha_arr[0] = ONE_OVER_SQRT_TWO
-    return alpha_arr
-
-
-def _alpha_2d() -> np.ndarray:
-    """
-    Normalization constant `alpha`, two dimensional.
-
-    Returns
-    ------
-    np.array : Normalization constants.
-    """
-    alpha_arr = _alpha_1d()
-    return alpha_arr.reshape(8, 1) @ alpha_arr.reshape(1, 8)
+    out = 0
+    for v in range(8):
+        for u in range(8):
+            norm_constant = (
+                _normalization_constant(v) * _normalization_constant(u)
+            )
+            out += norm_constant * patch[v, u] * _dct_cos(y, v) * _dct_cos(x, u)
+    return out * 0.25
 
 
 def dct(patch: np.ndarray) -> np.ndarray:
@@ -111,12 +115,9 @@ def dct(patch: np.ndarray) -> np.ndarray:
     if not patch.shape == (8, 8):
         raise ValueError(f'Patch should have shape (8, 8): patch.shape')
 
-    cosines = _dct_cosines()
-    alphas = _alpha_2d().flatten()
-
     return (
-        np.array([0.25 * alphas[idx] * (patch * cosine).sum()
-                  for idx, cosine in enumerate(cosines)])
+        np.array([_dct_spatial_frequency(patch, v, u)
+                  for v in range(8) for u in range(8)])
         .reshape(8, 8)
     )
 
@@ -140,4 +141,8 @@ def idct(patch: np.ndarray) -> np.ndarray:
     """
     if not patch.shape == (8, 8):
         raise ValueError(f'Patch should have shape (8, 8): patch.shape')
-    return fftpack.idct(patch)
+    return (
+        np.array([_idct_pixel(patch, y, x)
+                  for y in range(8) for x in range(8)])
+        .reshape(8, 8)
+    )
