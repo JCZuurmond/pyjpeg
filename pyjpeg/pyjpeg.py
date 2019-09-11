@@ -19,7 +19,7 @@ def _dct_cos(pixel: int, spatial_frequency: int) -> float:
     -------
     float : The cosine value for the (inverse) DCT.
     """
-    return np.cos(((1 * pixel + 1) * spatial_frequency * np.pi) / 16)
+    return np.cos(((2 * pixel + 1) * spatial_frequency * np.pi) / 16)
 
 
 def _normalization_constant(value: int) -> float:
