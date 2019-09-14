@@ -35,10 +35,6 @@ def G():
     ])
 
 
-def test_pyjpeg():
-    assert pyjpeg
-
-
 def test_dct_zeros_block_all_zeros():
     dct = pyjpeg.dct(np.zeros((8, 8)))
     np.testing.assert_array_equal(dct, 0)
