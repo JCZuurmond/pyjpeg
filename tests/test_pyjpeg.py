@@ -23,7 +23,7 @@ def g():
 @pytest.fixture
 def G():
     # Example from: https://en.wikipedia.org/wiki/JPEG
-	return np.array([
+    return np.array([
         [-415.38, -30.19, -61.20, 27.24, 56.12, -20.10, -2.39, 0.46],
         [4.47, -21.86, -60.76, 10.25, 13.15, -7.09, -8.54, 4.88],
         [-46.83, 7.37, 77.13, -24.56, -28.91, 9.93, 5.42, -5.65],
