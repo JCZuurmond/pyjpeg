@@ -88,10 +88,10 @@ def _idct_pixel(
     out = 0
     for v in range(8):
         for u in range(8):
-            norm_constant = (
+            c = (
                 _normalization_constant(v) * _normalization_constant(u)
             )
-            out += norm_constant * patch[v, u] * _dct_cos(y, v) * _dct_cos(x, u)
+            out += c * patch[v, u] * _dct_cos(y, v) * _dct_cos(x, u)
     return out * 0.25
 
 
