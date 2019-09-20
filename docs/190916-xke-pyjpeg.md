@@ -18,8 +18,9 @@ footer: Xccelerated session @ XKE 17-09-19
 	- Hard skills
 	- Soft skills
 
-^ Company: Heineken
-^ For me, a new thing was "knowledge sharing".
+^ 
+Company: Heineken
+For me, a new thing was "knowledge sharing".
 
 ---
 
@@ -27,7 +28,7 @@ footer: Xccelerated session @ XKE 17-09-19
 # [fit] sharing
 
 ^ 
-Heineken COP: pandas time series and code quality  
+Heineken COP: pandas time series and code quality
 Participate in the XKE
 
 ---
@@ -124,23 +125,20 @@ where $$g_{x, y}$$ are the pixel values.
 
 # The important parts
 
-Summations over your pixel values 
+Summations over your pixel values: 
 
-$$
-\sum\limits^{7}_{x=0} \sum\limits^{7}_{y=0} g_{x, y}
-$$
+$$ \sum\limits^{7}_{x=0} \sum\limits^{7}_{y=0} g_{x, y} $$
 
-And the cosine stuff
+And the cosine stuff: 
 
-$$
-cos\left[\frac{(2x + 1) v \pi}{16}\right]
-$$
+$$ cos\left[\frac{(2x + 1) v \pi}{16}\right] $$
+
 
 When combined, these extract **frequency signals**.
 
 ---
 
-# Less math, more visuals
+# In visuals
 ### 1D DCT filter
 
 ```python
@@ -196,8 +194,8 @@ dct_cos = lambda x, u: np.cos(((2 * x + 1) * u * np.pi) / 16)
 
 hor_spatial_frequency = 0
 ver_spatial_frequency = 0
-hor_dct_values = dct_cos(np.arange(8), hor_spatial_frequency)
-ver_dct_values = dct_cos(np.arange(8), ver_spatial_frequency)
+hor_dct_values = dct_cos(np.arange(8), hor_spatial_frequency).reshape(1, 8)
+ver_dct_values = dct_cos(np.arange(8), ver_spatial_frequency).reshape(8, 1)
 dct_values = np.outer(ver_dct_values, hor_dct_values)
 
 _, ax = plt.subplots(1, 1)
@@ -283,7 +281,7 @@ plt.tight_layout()
 
 ---
 
-## DCT decomposes a patch as a linear combination of the basis filters
+## DCT decomposes a patch into frequencies
 
 ![inline](../images/patch.JPG) ![inline 70%](../images/dct_grid.JPG)
 
@@ -302,13 +300,16 @@ plt.tight_layout()
 ---
 
 # We center it around zero 
-### by subtracting 127
+### by subtracting 128
 
 ![inline](../images/patch_shifted_numbers.jpg) 
 
+^
+This step reduces the dynamic range requirements in the DCT processing stage that follows.
+
 ---
 
-# We apply DCT to get
+## We apply DCT to get the coefficients 
 
 ![inline](../images/patch_dct.jpg) 
 
@@ -318,8 +319,10 @@ plt.tight_layout()
 
 ![inline](../images/patch_shifted_numbers.jpg) ![inline 80%](../images/dct_grid_w_numbers.JPG)
 
-^ Top left is the DC coefficient (constant hue)
-^ The others are the AC coefficient (altering components)
+^ 
+Top left is the DC coefficient (constant hue)
+The others are the AC coefficient (altering components)
+Note that these are without the normalization constants.
 
 ---
 
@@ -327,10 +330,9 @@ plt.tight_layout()
 
 1. From RGB to YCbCr
 1. Per color channel:
-	2. Discrete cosine transform (dct)
+	2. Discrete cosine transform (DCT)
 	3. **Quantization**
 	4. Entropy compression
-
 
 ---
 
@@ -349,11 +351,18 @@ The goal is to have many zeros at the end.
 
 1. From RGB to YCbCr
 1. Per color channel:
-	2. Discrete cosine transform (dct)
+	2. Discrete cosine transform (DCT)
 	3. Quantization
 	4. **Entropy compression**
 
 ^ End of block and less bits for numbers that occurred more often
+
+---
+
+# JPEG filters out high frequency signals
+
+^
+Could be used during my thesis
 
 ---
 
