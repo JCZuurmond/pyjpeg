@@ -1,5 +1,5 @@
 autoscale: true
-slidenumbers: true
+slidenumbers: false
 footer: Xccelerated session @ XKE 17-09-19
 
 # [fit] Xccelerated
