@@ -82,3 +82,12 @@ def test_scipy_idct_dct_same_as_pyjpeg_idct_dct_wikipedia_example(g):
         pyjpeg.idct(pyjpeg.dct(g)),
         fftpack.idctn(fftpack.dctn(g, norm='ortho'), norm='ortho')
     )
+
+
+@pytest.mark.parametrize(
+    "bits,expected",
+    [('0', 0),
+     ('1', 1)]
+)
+def test_bits_to_int_four(bits, expected):
+    assert pyjpeg.bits_to_int(bits) == expected

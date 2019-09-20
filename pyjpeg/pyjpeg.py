@@ -146,3 +146,22 @@ def idct(patch: np.ndarray) -> np.ndarray:
                   for y in range(8) for x in range(8)])
         .reshape(8, 8)
     )
+
+
+def bits_to_int(bits: str) -> int:
+    """
+    Convert a bit string to an integer.
+
+    Parameters
+    ----------
+    bits : str
+        The bit string to be converted.
+
+    Returns
+    -------
+    int : The final integer.
+    """
+    return sum([
+        2 ** p if b == '1' else 0
+        for p, b in enumerate(bits[::-1])
+    ])
