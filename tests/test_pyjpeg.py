@@ -190,3 +190,13 @@ def test_int_to_bits_large_numbers(number, expected):
 def test_zigzag_patch(B, B_zigzag):
     out = huffman.zigzag_patch(B)
     np.testing.assert_array_equal(out, B_zigzag)
+
+
+def test_huffman_encode_decode_b(B):
+    out = huffman.decode(huffman.encode(B.flatten()))
+    np.testing.assert_array_equal(out, B.flatten())
+
+
+def test_huffman_encode_decode_b_zigzag(B_zigzag):
+    out = huffman.decode(huffman.encode(B_zigzag))
+    np.testing.assert_array_equal(out, B_zigzag)
