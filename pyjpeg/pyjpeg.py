@@ -115,7 +115,7 @@ def dct(patch: np.ndarray) -> np.ndarray:
     ValueError : If the patch is not 8 by 8
     """
     if not patch.shape == (8, 8):
-        raise ValueError(f'Patch should have shape (8, 8): patch.shape')
+        raise ValueError(f'Patch should have shape (8, 8): {patch.shape}')
 
     return (
         np.array([_dct_spatial_frequency(patch, v, u)
@@ -142,7 +142,7 @@ def idct(patch: np.ndarray) -> np.ndarray:
     ValueError : If the patch is not 8 by 8
     """
     if not patch.shape == (8, 8):
-        raise ValueError(f'Patch should have shape (8, 8): patch.shape')
+        raise ValueError(f'Patch should have shape (8, 8): {patch.shape}')
     return (
         np.array([_idct_pixel(patch, y, x)
                   for y in range(8) for x in range(8)])
