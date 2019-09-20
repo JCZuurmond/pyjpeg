@@ -125,8 +125,8 @@ def test_bits_to_int_large_numbers(bits, expected):
      (1, '1'),
      (2, '10'),
      (3, '11'),
-     (4, '0100'),
-     (5, '0101'),
+     (4, '100'),
+     (5, '101'),
      (6, '110'),
      (7, '111'),
      (8, '1000'),
@@ -139,7 +139,7 @@ def test_bits_to_int_large_numbers(bits, expected):
      (15, '1111')]
 )
 def test_int_to_bits_uptill_fifteen(number, expected):
-    assert pyjpeg.int_to_bits(number, n=len(expected)) == expected
+    assert pyjpeg.int_to_bits(number) == expected
 
 
 @pytest.mark.parametrize(
@@ -151,4 +151,4 @@ def test_int_to_bits_uptill_fifteen(number, expected):
      (877, '1101101101')]
 )
 def test_int_to_bits_large_numbers(number, expected):
-    assert pyjpeg.int_to_bits(number, n=len(expected)) == expected
+    assert pyjpeg.int_to_bits(number) == expected

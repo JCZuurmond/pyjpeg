@@ -1,3 +1,5 @@
+import math
+
 import numpy as np
 
 
@@ -167,7 +169,7 @@ def bits_to_int(bits: str) -> int:
     ])
 
 
-def int_to_bits(int_: int, n: int = 4) -> str:
+def int_to_bits(int_: int) -> str:
     """
     Convert an integer to a bit string.
 
@@ -175,19 +177,16 @@ def int_to_bits(int_: int, n: int = 4) -> str:
     ----------
     int_ : int
         The integer to be converted.
-    n : int, optional (default : 4)
-        The length of the bit string
 
     Returns
     -------
     str : The bit string represetnation of the integer.
     """
     bits = ''
-    for p in range(n - 1, -1, -1):
+    # The maximum power of two is needed to determine the number of bits
+    # needed to represent the integer.
+    for p in range(int(math.log(int_, 2)), -1, -1):
         to_subtract = 2 ** p
-        if to_subtract <= int_:
-            bits += '1'
-            int_ -= to_subtract
-        else:
-            bits += '0'
+        bits += '1' if to_subtract <= int_ else '0'
+        int_ = int_ % to_subtract
     return bits
