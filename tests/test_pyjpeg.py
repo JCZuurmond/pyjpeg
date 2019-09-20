@@ -117,3 +117,38 @@ def test_bits_to_int_uptill_fifteen(bits, expected):
 )
 def test_bits_to_int_large_numbers(bits, expected):
     assert pyjpeg.bits_to_int(bits) == expected
+
+
+@pytest.mark.parametrize(
+    "number,expected",
+    [(0, '0'),
+     (1, '1'),
+     (2, '10'),
+     (3, '11'),
+     (4, '0100'),
+     (5, '0101'),
+     (6, '110'),
+     (7, '111'),
+     (8, '1000'),
+     (9, '1001'),
+     (10, '1010'),
+     (11, '1011'),
+     (12, '1100'),
+     (13, '1101'),
+     (14, '1110'),
+     (15, '1111')]
+)
+def test_int_to_bits_uptill_fifteen(number, expected):
+    assert pyjpeg.int_to_bits(number, n=len(expected)) == expected
+
+
+@pytest.mark.parametrize(
+    "number,expected",
+    [(233, '11101001'),
+     (693, '1010110101'),
+     (964, '1111000100'),
+     (633, '1001111001'),
+     (877, '1101101101')]
+)
+def test_int_to_bits_large_numbers(number, expected):
+    assert pyjpeg.int_to_bits(number, n=len(expected)) == expected

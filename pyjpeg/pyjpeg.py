@@ -165,3 +165,29 @@ def bits_to_int(bits: str) -> int:
         2 ** p if b == '1' else 0
         for p, b in enumerate(bits[::-1])
     ])
+
+
+def int_to_bits(int_: int, n: int = 4) -> str:
+    """
+    Convert an integer to a bit string.
+
+    Parameters
+    ----------
+    int_ : int
+        The integer to be converted.
+    n : int, optional (default : 4)
+        The length of the bit string
+
+    Returns
+    -------
+    str : The bit string represetnation of the integer.
+    """
+    bits = ''
+    for p in range(n - 1, -1, -1):
+        to_subtract = 2 ** p
+        if to_subtract <= int_:
+            bits += '1'
+            int_ -= to_subtract
+        else:
+            bits += '0'
+    return bits
