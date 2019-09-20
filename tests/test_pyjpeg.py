@@ -87,7 +87,21 @@ def test_scipy_idct_dct_same_as_pyjpeg_idct_dct_wikipedia_example(g):
 @pytest.mark.parametrize(
     "bits,expected",
     [('0', 0),
-     ('1', 1)]
+     ('1', 1),
+     ('10', 2),
+     ('11', 3),
+     ('100', 4),
+     ('101', 5),
+     ('110', 6),
+     ('111', 7),
+     ('1000', 8),
+     ('1001', 9),
+     ('1010', 10),
+     ('1011', 11),
+     ('1100', 12),
+     ('1101', 13),
+     ('1110', 14),
+     ('1111', 15)]
 )
-def test_bits_to_int_four(bits, expected):
+def test_bits_to_int_uptill_fifteen(bits, expected):
     assert pyjpeg.bits_to_int(bits) == expected
