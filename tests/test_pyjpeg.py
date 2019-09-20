@@ -147,6 +147,11 @@ def test_bits_to_int_large_numbers(bits, expected):
     assert huffman.bits_to_int(bits) == expected
 
 
+def test_zfill_bits_to_int():
+    bits = '1010'
+    assert huffman.bits_to_int(bits) == huffman.bits_to_int(bits.zfill(10))
+
+
 @pytest.mark.parametrize(
     "number,expected",
     [(0, '0'),
