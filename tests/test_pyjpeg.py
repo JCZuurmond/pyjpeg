@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from scipy import fftpack
 
-from pyjpeg import pyjpeg
+from pyjpeg import huffman, pyjpeg
 
 
 @pytest.fixture
@@ -132,7 +132,7 @@ def test_scipy_idct_dct_same_as_pyjpeg_idct_dct_wikipedia_example(g):
      ('1111', 15)]
 )
 def test_bits_to_int_uptill_fifteen(bits, expected):
-    assert pyjpeg.bits_to_int(bits) == expected
+    assert huffman.bits_to_int(bits) == expected
 
 
 @pytest.mark.parametrize(
@@ -144,7 +144,7 @@ def test_bits_to_int_uptill_fifteen(bits, expected):
      ('1101101101', 877)]
 )
 def test_bits_to_int_large_numbers(bits, expected):
-    assert pyjpeg.bits_to_int(bits) == expected
+    assert huffman.bits_to_int(bits) == expected
 
 
 @pytest.mark.parametrize(
@@ -167,7 +167,7 @@ def test_bits_to_int_large_numbers(bits, expected):
      (15, '1111')]
 )
 def test_int_to_bits_uptill_fifteen(number, expected):
-    assert pyjpeg.int_to_bits(number) == expected
+    assert huffman.int_to_bits(number) == expected
 
 
 @pytest.mark.parametrize(
@@ -179,9 +179,9 @@ def test_int_to_bits_uptill_fifteen(number, expected):
      (877, '1101101101')]
 )
 def test_int_to_bits_large_numbers(number, expected):
-    assert pyjpeg.int_to_bits(number) == expected
+    assert huffman.int_to_bits(number) == expected
 
 
 def test_zigzag_patch(B, B_zigzag):
-    out = pyjpeg.zigzag_patch(B)
+    out = huffman.zigzag_patch(B)
     np.testing.assert_array_equal(out, B_zigzag)
