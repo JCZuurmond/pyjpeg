@@ -190,3 +190,30 @@ def int_to_bits(int_: int) -> str:
         bits += '1' if to_subtract <= int_ else '0'
         int_ = int_ % to_subtract
     return bits
+
+
+def zigzag_patch(patch: np.ndarray) -> np.array:
+    """
+    Reorders the elements in a patch in a zigzag order.
+
+    Parameters
+    ----------
+    patch : np.ndarray
+        The patch.
+
+    Returns
+    -------
+    np.array : The elements of the patch (in zigzag order).
+
+    Source
+    ------
+    https://en.wikipedia.org/wiki/File:JPEG_ZigZag.svg
+    """
+    if not patch.shape == (8, 8):
+        raise ValueError(f'Patch should have shape (8, 8): {patch.shape}')
+    patch_90 = np.rot90(patch)
+    return np.concatenate([
+        # The direction of the diagonal is alternated for the zigzag order
+        patch_90.diagonal(index)[::-1 if index % 2 else 1]
+        for index in range(-7, 8)
+    ])

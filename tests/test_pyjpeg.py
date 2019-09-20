@@ -35,6 +35,34 @@ def G():
     ])
 
 
+@pytest.fixture
+def B():
+    return np.array([
+        [-26, -3, -6, 2, 2, -1, 0, 0],
+        [0, -2, -4, 1, 1, 0, 0, 0],
+        [-3, 1, 5, -1, -1, 0, 0, 0],
+        [-3, 1, 2, -1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+    ])
+
+
+@pytest.fixture
+def B_zigzag():
+    return np.array([
+        -26, -3, 0, -3, -2, -6, 2, -4,
+        1, -3, 1, 1, 5, 1, 2, -1,
+        1, -1, 2, 0, 0, 0, 0, 0,
+        -1, -1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+    ])
+
+
 def test_dct_zeros_block_all_zeros():
     dct = pyjpeg.dct(np.zeros((8, 8)))
     np.testing.assert_array_equal(dct, 0)
@@ -152,3 +180,8 @@ def test_int_to_bits_uptill_fifteen(number, expected):
 )
 def test_int_to_bits_large_numbers(number, expected):
     assert pyjpeg.int_to_bits(number) == expected
+
+
+def test_zigzag_patch(B, B_zigzag):
+    out = pyjpeg.zigzag_patch(B)
+    np.testing.assert_array_equal(out, B_zigzag)
