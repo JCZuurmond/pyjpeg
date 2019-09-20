@@ -37,6 +37,8 @@ def int_to_bits(int_: int) -> str:
     """
     if int_ < 0:
         raise ValueError(f'Integer should be positive: {int_}')
+    if int_ == 0:
+        return '0'
     bits = ''
     # The maximum power of two is needed to determine the number of bits
     # needed to represent the integer.
