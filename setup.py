@@ -14,7 +14,9 @@ with open('README.md') as readme_file:
 requirements = []
 setup_requirements = []
 test_requirements = ['pytest']
-extra_requirements = {}
+extra_requirements = {
+    'dev': ['pre-commit', 'flake8']
+}
 
 
 setuptools.setup(
