@@ -119,7 +119,6 @@ def test_decode_all_zeros():
     assert_array_equal(out, np.zeros(64))
 
 
-
 def test_zigzag_patch(B, B_zigzag):
     out = huffman.zigzag_patch(B)
     np.testing.assert_array_equal(out, B_zigzag)
