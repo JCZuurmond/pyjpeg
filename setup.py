@@ -11,11 +11,19 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 
-requirements = []
-setup_requirements = []
-test_requirements = ['pytest']
+requirements = [
+    'numpy',
+]
+setup_requirements = [
+    'pytest-runner',
+]
+test_requirements = [
+    'pytest',
+    'pytest-cov',
+    'scipy',
+]
 extra_requirements = {
-    'dev': ['pre-commit', 'flake8']
+    'dev': ['pre-commit', 'flake8', 'jupyter', 'matplotlib']
 }
 
 
@@ -30,7 +38,6 @@ setuptools.setup(
     version='0.1.0',
     install_requires=requirements,
     setup_requires=setup_requirements,
-    test_suite='tests',
     tests_require=test_requirements,
     extras_require=extra_requirements,
 )
