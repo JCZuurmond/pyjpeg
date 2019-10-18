@@ -37,6 +37,18 @@ def test_int_to_bits():
         assert huffman.int_to_bits(int_).zfill(len(bits)) == bits
 
 
+def test_bits_to_int_and_back():
+    for bits in BITS_INT.keys():
+        int_ = huffman.bits_to_int(bits)
+        assert huffman.int_to_bits(int_).zfill(len(bits)) == bits
+
+
+def test_int_to_bits_and_back():
+    for int_ in BITS_INT.values():
+        bits = huffman.int_to_bits(int_)
+        assert huffman.bits_to_int(bits) == int_
+
+
 def test_encode_all_zeros():
     zeros = np.zeros(20)
     out = huffman.encode(zeros)
