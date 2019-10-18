@@ -23,7 +23,7 @@ test_requirements = [
     'scipy',
 ]
 extra_requirements = {
-    'dev': ['pre-commit', 'flake8']
+    'dev': ['pre-commit', 'flake8', 'jupyter', 'matplotlib']
 }
 
 
