@@ -12,7 +12,9 @@ with open('README.md') as readme_file:
 
 
 requirements = []
-setup_requirements = []
+setup_requirements = [
+    'pytest-runner',
+]
 test_requirements = [
     'pytest',
     'pytest-cov',
@@ -33,7 +35,6 @@ setuptools.setup(
     version='0.1.0',
     install_requires=requirements,
     setup_requires=setup_requirements,
-    test_suite='tests',
     tests_require=test_requirements,
     extras_require=extra_requirements,
 )
