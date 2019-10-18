@@ -78,41 +78,6 @@ def test_int_to_bits_and_back():
         assert huffman.bits_to_int(bits) == int_
 
 
-def test_encode_all_zeros():
-    zeros = np.zeros(20)
-    out = huffman.encode(zeros)
-    assert_array_equal(out, '0' * 8)
-
-
-def test_decode_all_zeros():
-    code = '0' * 8
-    out = huffman.decode(code)
-    assert_array_equal(out, np.zeros(64))
-
-
-@pytest.mark.parametrize(
-    "bits,expected",
-    [('0', 0),
-     ('1', 1),
-     ('10', 2),
-     ('11', 3),
-     ('100', 4),
-     ('101', 5),
-     ('110', 6),
-     ('111', 7),
-     ('1000', 8),
-     ('1001', 9),
-     ('1010', 10),
-     ('1011', 11),
-     ('1100', 12),
-     ('1101', 13),
-     ('1110', 14),
-     ('1111', 15)]
-)
-def test_bits_to_int_uptill_fifteen(bits, expected):
-    assert huffman.bits_to_int(bits) == expected
-
-
 @pytest.mark.parametrize(
     "bits,expected",
     [('11101001', 233),
@@ -132,29 +97,6 @@ def test_zfill_bits_to_int():
 
 @pytest.mark.parametrize(
     "number,expected",
-    [(0, '0'),
-     (1, '1'),
-     (2, '10'),
-     (3, '11'),
-     (4, '100'),
-     (5, '101'),
-     (6, '110'),
-     (7, '111'),
-     (8, '1000'),
-     (9, '1001'),
-     (10, '1010'),
-     (11, '1011'),
-     (12, '1100'),
-     (13, '1101'),
-     (14, '1110'),
-     (15, '1111')]
-)
-def test_int_to_bits_uptill_fifteen(number, expected):
-    assert huffman.int_to_bits(number) == expected
-
-
-@pytest.mark.parametrize(
-    "number,expected",
     [(233, '11101001'),
      (693, '1010110101'),
      (964, '1111000100'),
@@ -163,6 +105,19 @@ def test_int_to_bits_uptill_fifteen(number, expected):
 )
 def test_int_to_bits_large_numbers(number, expected):
     assert huffman.int_to_bits(number) == expected
+
+
+def test_encode_all_zeros():
+    zeros = np.zeros(20)
+    out = huffman.encode(zeros)
+    assert_array_equal(out, '0' * 8)
+
+
+def test_decode_all_zeros():
+    code = '0' * 8
+    out = huffman.decode(code)
+    assert_array_equal(out, np.zeros(64))
+
 
 
 def test_zigzag_patch(B, B_zigzag):
