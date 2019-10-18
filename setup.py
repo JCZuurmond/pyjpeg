@@ -13,7 +13,10 @@ with open('README.md') as readme_file:
 
 requirements = []
 setup_requirements = []
-test_requirements = ['pytest']
+test_requirements = [
+    'pytest',
+    'pytest-cov',
+]
 extra_requirements = {
     'dev': ['pre-commit', 'flake8']
 }
