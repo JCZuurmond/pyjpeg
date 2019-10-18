@@ -11,13 +11,16 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 
-requirements = []
+requirements = [
+    'numpy',
+]
 setup_requirements = [
     'pytest-runner',
 ]
 test_requirements = [
     'pytest',
     'pytest-cov',
+    'scipy',
 ]
 extra_requirements = {
     'dev': ['pre-commit', 'flake8']
