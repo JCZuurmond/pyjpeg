@@ -5,3 +5,4 @@ docs/pydata-eindhoven-talk-proposal.md
 .eggs/
 .coverage
 coverage/
+*.paint
