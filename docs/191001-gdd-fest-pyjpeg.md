@@ -33,13 +33,7 @@ footer: Implementing JPEG in Python | GoDataFest 2019, Cor Zuurmond | github.com
 
 ---
 
-# And just that happened to Lena...
-
-![inline](pictures/stick-figure3.png)
-
----
-
-# just another day 
+# Just another day 
 
 ![inline](pictures/stick-figure3.png)
 
@@ -65,7 +59,7 @@ footer: Implementing JPEG in Python | GoDataFest 2019, Cor Zuurmond | github.com
 
 # Lena did not notice at first
 
-![inline](pictures/stick-figure3.png)
+![inline left](pictures/stick-figure3.png)
 
 ^ 
 Sure people look old and fancy
@@ -74,15 +68,21 @@ data consultant was here!
 
 ---
 
-## Peet was skeptical, but he needed Lenas help!
+# The data consultant is here!
 
-![inline](pictures/stick-figure-hat.png)
+![inline left](pictures/stick-figure3.png)
 
 ---
 
-## Her company invested a lot of money in digital photo cameras. 
+## Peet was skeptical, but he needed Lena's help!
 
-![inline](pictures/stick-figure-hat.png)
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
+
+---
+
+## His company invested a lot of money in digital photo cameras. 
+
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ---
 
@@ -98,13 +98,13 @@ data consultant was here!
 
 # Compress?
 
-![inline](pictures/stick-figure-hat.png)
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ---
 
 # Yes, compress!
 
-![inline](pictures/stick-figure3.png)
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ---
 
@@ -127,11 +127,11 @@ data consultant was here!
 
 ---
 
-## As always, Lena started with google
+## As always, Lena started with Google
 
 ---
 
-# but google did not work.
+# but Google did not work.
 
 ---
 
@@ -147,12 +147,6 @@ data consultant was here!
 
 ---
 
-## Lena was back to being her normal self
-
-![inline](pictures/stick-figure3.png)
-
----
-
 # How does images compression work?
 
 ---
@@ -161,7 +155,7 @@ data consultant was here!
 
 ---
 
-# She presented her findings
+## The next day she presented her findings
 
 ![inline](pictures/stick-figure3.png)
 
@@ -242,7 +236,7 @@ To put it softly:
 
 # Peet was a little disappointed
 
-![inline](pictures/stick-figure-hat.png)
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ^
 Which Lena understood
@@ -251,16 +245,26 @@ Which Lena understood
 
 # Lena asked for a second chance
 
-![inline](pictures/stick-figure3.png)
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ---
 
-## Lena went to a bar for a drink and to think
+# Lena needed a drink
 
 ![inline](pictures/stick-figure3.png)
 
 ^
 After sitting in the bar for a couple hours staring blank to the wall.
+
+---
+
+## Lena was not the data queen she thought she would be
+
+![inline](pictures/stick-figure-king-unhappy.png)
+
+---
+
+# She was standing <br> on the <br> shoulders of giants
 
 ---
 
@@ -275,7 +279,7 @@ compression. But she knew about the war.
 
 ---
 
-# She started talking about the war
+# He started talking about the war
 
 ---
 
@@ -336,7 +340,7 @@ beer.
 
 ---
 
-## Lena knew she was on the right track
+## Lena felt she was on the right track
 
 ![inline](pictures/stick-figure3.png)
 
@@ -382,7 +386,7 @@ beer.
 1. If, pixels are correlated to neighbouring pixels;
 2. The change in values of neighbouring pixels is low;
 3. A.k.a. the pixel value _frequency_ of neighbouring pixels is low;
-4. We need a low pass filter for the pixel values frequencies!
+4. Then we remove high frequency values - set them to zero;
 
 ---
 
@@ -391,7 +395,8 @@ beer.
 1. If, pixels are correlated to neighbouring pixels;
 2. The change in values of neighbouring pixels is low;
 3. A.k.a. the pixel value _frequency_ of neighbouring pixels is low;
-4. We need a low pass filter for the pixel values frequencies!
+4. Then we remove high frequency values - set them to zero;
+5. Save memory by using only a few bits for zero/low values.
 
 ---
 
@@ -579,9 +584,23 @@ The shape - filter - you have determines what you get out.
 
 ---
 
-# A loop over group of pixels
+# A convolution applies a filter to a group of <br> neighbouring pixels
+
+---
+
+# It loops over group of pixels
 
 ![inline](https://neurohive.io/wp-content/uploads/2018/07/convolutional-neural-network.gif)
+
+---
+
+![inline](https://miro.medium.com/max/1026/1*cTEp-IvCCUYPTT0QpE3Gjg@2x.png)
+
+---
+
+![inline](https://cdn-media-1.freecodecamp.org/images/Htskzls1pGp98-X2mHmVy9tCj0cYXkiCrQ4t)
+
+^ https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2
 
 ---
 
@@ -603,13 +622,41 @@ for each filter:
 
 ---
 
-# Most values were around zero
+# Original image
+
+![inline](../images/lena.png)
+
+---
+
+# Image after applying the filters
+
+![inline](../images/lena-freq.png)
+
+---
+
+# Side by side
+
+![inline 250%](pictures/lena-freq.png)
+
+---
+
+# Side by side
+
+![inline 250%](pictures/lena-freq-areas.png)
+
+---
+
+# Most values were around zero!
 
 ![inline](../images/lena-compressed-pixel-values-hist.png)
 
 ---
 
-# The final step Lena needed to do is the _low pass_ part
+# If many values are similar we can compress them!
+
+---
+
+## We can get even more similar values by setting high frequency values to zero
 
 ---
 
@@ -691,13 +738,19 @@ for each filter:
 
 ---
 
-# Reduce higher frequency with a bigger factor
+# Reduce higher frequencies with a bigger factor
 
 ---
 
 # Reduce matrix
 
 ![inline](pictures/quantization-dimensions.png) 
+
+---
+
+# Reduce matrix
+
+![inline](pictures/quantization-dimensions-areas.png) 
 
 ---
 
@@ -733,9 +786,13 @@ for each filter:
 
 ---
 
-# Lena was a data queen!!!
+# Lena was a data queen after all!!!
 
 ![inline](pictures/stick-figure-king.png)
+
+---
+
+## She learned that even very common things can actually be quite complicated
 
 ---
 
