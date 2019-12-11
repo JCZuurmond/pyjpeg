@@ -1,5 +1,5 @@
 slidenumbers: true
-footer: Implementing JPEG in Python | GoDataFest 2019, Cor Zuurmond | github.com/JCZuurmond/pyjpeg
+footer: Implementing JPEG in Python | Open Source Day, GoDataFest 2019, Cor Zuurmond | github.com/JCZuurmond/pyjpeg
 
 # Implementing 
 # [fit] JPEG 
@@ -7,7 +7,7 @@ footer: Implementing JPEG in Python | GoDataFest 2019, Cor Zuurmond | github.com
 
 ---
 
-# Meet lena
+# Meet Lena
 
 ![inline](pictures/stick-figure3.png)
 
@@ -19,17 +19,17 @@ footer: Implementing JPEG in Python | GoDataFest 2019, Cor Zuurmond | github.com
 
 ---
 
-# Lena dreamt of going back in time
+## Lena dreamt of going back in time
 
 ![inline](pictures/clock-going-back2.png)
 
 ---
 
-# She would be data queen
+# She would be a data queen[^0]
 
 ![inline](pictures/stick-figure-king.png)
 
-^ Crown by Marco Livolsi from tshe Noun Project
+[^0]: Crown by Marco Livolsi from the Noun Project
 
 ---
 
@@ -51,13 +51,7 @@ footer: Implementing JPEG in Python | GoDataFest 2019, Cor Zuurmond | github.com
 
 ---
 
-# It was not just an elevator, it also was a time machine
-
-![inline](pictures/clock-going-back2.png)
-
----
-
-# Lena did not notice at first
+# Lena did not notice it at first
 
 ![inline left](pictures/stick-figure3.png)
 
@@ -74,15 +68,20 @@ data consultant was here!
 
 ---
 
-## Peet was skeptical, but he needed Lena's help!
+# Peet was skeptical
 
 ![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
+
+[.header: alignment(right)]
 
 ---
 
-## His company invested a lot of money in digital photo cameras. 
+## His company invested a lot of money in digital photo cameras
+
 
 ![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
+
+[.header: alignment(right)]
 
 ---
 
@@ -100,6 +99,8 @@ data consultant was here!
 
 ![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
+[.header: alignment(right)]
+
 ---
 
 # Yes, compress!
@@ -108,22 +109,30 @@ data consultant was here!
 
 ---
 
-# [fit] .zip .tar
+# [fit] .zip 
+# [fit] .tar
 # [fit] .gz
 # [fit] deflate
-# [fit] compress
+
+---
+
+# Compress!
+
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ---
 
 # No... Can you do it?
 
-![inline](pictures/stick-figure-hat.png)
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
+
+[.header: alignment(right)]
 
 ---
 
 # Uhm, sure!
 
-![inline](pictures/stick-figure3.png)
+![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ---
 
@@ -147,7 +156,7 @@ data consultant was here!
 
 ---
 
-# How does images compression work?
+# How does image compression work?
 
 ---
 
@@ -169,13 +178,19 @@ data consultant was here!
 
 # Original image
 
-![inline](pictures/lena-dimensions.png)
+![inline](pictures/lena-dimensions-channels.png)
 
 ---
 
 # Number of bits
 
-![inline 300%](pictures/image-bits.png)
+$$N_{\textit{pixels}} = W * H * C$$
+<br>
+$$N_{\textit{bits}} = N_{\textit{pixels}} * \textit{pixels per bit}$$
+
+$$W$$ = width
+$$H$$ = height
+$$C$$ = channels
 
 ---
 
@@ -191,15 +206,15 @@ data consultant was here!
 
 ---
 
-# Number of bits
-
-![inline 300%](pictures/image-bits-final.png)
+## Number of bits
+<br>
+# $$ N_{\textit{bits}} = 8 * W * H $$
 
 ---
 
 # Reduce image size with 37.5%!
 
-![inline 300%](pictures/pixel-values-32.png)
+![inline 300%](pictures/pixel-values-31.png)
 
 ---
 
@@ -209,9 +224,10 @@ data consultant was here!
 
 ---
 
-# Reduce image size with 50%!
+# Reduce image size with 50%!!
 
-![inline 300%](pictures/pixel-values-16.png)
+![inline 300%](pictures/pixel-values-15.png)
+
 
 ---
 
@@ -229,21 +245,21 @@ data consultant was here!
 
 ![inline](../images/lena-quarter.png)
 
-^
-To put it softly:
 
 ---
 
-# Peet was a little disappointed
+## I am a little disappointed
 
 ![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
 ^
-Which Lena understood
+To put it softly
+
+[.header: alignment(right)]
 
 ---
 
-# Lena asked for a second chance
+## Can I have a second chance?
 
 ![inline left](pictures/stick-figure3.png) ![inline right](pictures/stick-figure-hat.png)
 
@@ -258,7 +274,7 @@ After sitting in the bar for a couple hours staring blank to the wall.
 
 ---
 
-## Lena was not the data queen she thought she would be
+## Lena was not the data queen she thought she would be[^0]
 
 ![inline](pictures/stick-figure-king-unhappy.png)
 
@@ -319,14 +335,14 @@ beer.
 # Though...
 
 - Probably other pictures have a different distribution in pixel values;
-- Remembering the mapping (every time) takes memory;
+- Storing the mapping (every time) takes memory;
 
 ---
 
 # Though...
 
 - Probably other pictures have a different distribution in pixel values;
-- Remembering the mapping (every time) takes memory;
+- Storing the mapping (every time) takes memory;
 - We do not know the distribution of pixel values of all images;
 
 ---
@@ -334,7 +350,7 @@ beer.
 # Though...
 
 - Probably other pictures have a different distribution in pixel values;
-- Remembering the mapping (every time) takes memory;
+- Storing the mapping (every time) takes memory;
 - We do not know the distribution of pixel values of all images;
 - The distribution might be mostly flat - equally distributed.
 
@@ -346,7 +362,13 @@ beer.
 
 ---
 
-# What do all pictures in common?
+# What do all pictures have in common?
+
+---
+
+# Let's look at the image again
+
+![inline](pictures/lena.png)
 
 ---
 
@@ -356,47 +378,58 @@ beer.
 
 ---
 
-# Pixels have similar values as their neighbouring pixels
+# Most pixels have similar values as their neighbouring pixels
 
 ---
 
 # Lena got in the flow
 
-1. If, pixels are correlated to neighbouring pixels;
+1. If pixels are correlated to neighbouring pixels,
 
 ---
 
 # Lena got in the flow
 
-1. If, pixels are correlated to neighbouring pixels;
-2. The change in values of neighbouring pixels is low;
+1. If pixels are correlated to neighbouring pixels,
+   the change in values of neighbouring pixels is low.
 
 ---
 
 # Lena got in the flow
 
-1. If, pixels are correlated to neighbouring pixels;
-2. The change in values of neighbouring pixels is low;
-3. A.k.a. the pixel value _frequency_ of neighbouring pixels is low;
+1. If pixels are correlated to neighbouring pixels,
+   the change in values of neighbouring pixels is low.
+2. If we decompose pictures into frequencies,
 
 ---
 
 # Lena got in the flow
 
-1. If, pixels are correlated to neighbouring pixels;
-2. The change in values of neighbouring pixels is low;
-3. A.k.a. the pixel value _frequency_ of neighbouring pixels is low;
-4. Then we remove high frequency values - set them to zero;
+1. If pixels are correlated to neighbouring pixels,
+   the change in values of neighbouring pixels is low.
+2. If we decompose pictures into frequencies,
+   we expect mostly low frequencies, and few high frequencies.
 
 ---
 
 # Lena got in the flow
 
-1. If, pixels are correlated to neighbouring pixels;
-2. The change in values of neighbouring pixels is low;
-3. A.k.a. the pixel value _frequency_ of neighbouring pixels is low;
-4. Then we remove high frequency values - set them to zero;
-5. Save memory by using only a few bits for zero/low values.
+1. If pixels are correlated to neighbouring pixels,
+   the change in values of neighbouring pixels is low.
+2. If we decompose pictures into frequencies,
+   we expect mostly low frequencies, and few high frequencies.
+3. The factor of high frequencies is low - probably zero.
+
+---
+
+# Lena got in the flow
+
+1. If pixels are correlated to neighbouring pixels,
+   the change in values of neighbouring pixels is low.
+2. If we decompose pictures into frequencies,
+   we expect mostly low frequencies, and few high frequencies.
+3. The factor of high frequencies is low - probably zero.
+4. We can compress many zeros!
 
 ---
 
@@ -574,7 +607,7 @@ The shape - filter - you have determines what you get out.
 
 ---
 
-# Highest frequency
+# High frequency
 
 ![inline](../images/dct_2d_7_7.png)
 
@@ -588,15 +621,24 @@ The shape - filter - you have determines what you get out.
 
 ---
 
-# It loops over group of pixels
+# It loops over groups of pixels[^1]
 
 ![inline](https://neurohive.io/wp-content/uploads/2018/07/convolutional-neural-network.gif)
 
+[^1]: https://zhenye-na.github.io/2018/11/30/cnn-deep-leearning-ai-week1.html
+
 ---
+
+# An example[^2]
 
 ![inline](https://miro.medium.com/max/1026/1*cTEp-IvCCUYPTT0QpE3Gjg@2x.png)
 
+
+[^2]: https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2
+
 ---
+
+# An example[^2]
 
 ![inline](https://cdn-media-1.freecodecamp.org/images/Htskzls1pGp98-X2mHmVy9tCj0cYXkiCrQ4t)
 
@@ -652,11 +694,11 @@ for each filter:
 
 ---
 
-# If many values are similar we can compress them!
+# If many values <br> are zero we can <br> compress them!
 
 ---
 
-## We can get even more similar values by setting high frequency values to zero
+## We can get more zeros by removing high frequencies
 
 ---
 
@@ -770,9 +812,15 @@ for each filter:
 
 ---
 
-# Side to side
+# Side by side
 
-![inline 100%](../images/lena-side-to-side.png)
+![inline 300%](pictures/lena-side-by-side.png)
+
+---
+
+# Side by side
+
+![inline 300%](pictures/lena-side-by-side-areas.png)
 
 ---
 
@@ -786,16 +834,22 @@ for each filter:
 
 ---
 
-# Lena was a data queen after all!!!
+## Lena was a data queen after all!!![^0]
 
 ![inline](pictures/stick-figure-king.png)
 
 ---
 
-## She learned that even very common things can actually be quite complicated
+# Open Source <br> makes life easier
 
 ---
 
 # Implementing 
 # [fit] JPEG 
 # in Python
+
+---
+
+# Code is on Github
+
+# [fit] github.com/JCZuurmond/pyjpeg
