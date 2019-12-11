@@ -6,3 +6,4 @@ docs/pydata-eindhoven-talk-proposal.md
 .coverage
 coverage/
 *.paint
+.vscode/
