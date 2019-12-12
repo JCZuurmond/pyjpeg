@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from scipy import fftpack
 
-from pyjpeg import huffman, pyjpeg
+from pyjpeg import pyjpeg
 
 
 @pytest.fixture
@@ -32,34 +32,6 @@ def G():
         [-7.73, 2.91, 2.38, -5.94, -2.38, 0.94, 4.30, 1.85],
         [-1.03, 0.18, 0.42, -2.42, -0.88, -3.02, 4.12, -0.66],
         [-0.17, 0.14, -1.07, -4.19, -1.17, -0.10, 0.50, 1.68]
-    ])
-
-
-@pytest.fixture
-def B():
-    return np.array([
-        [-26, -3, -6, 2, 2, -1, 0, 0],
-        [0, -2, -4, 1, 1, 0, 0, 0],
-        [-3, 1, 5, -1, -1, 0, 0, 0],
-        [-3, 1, 2, -1, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-    ])
-
-
-@pytest.fixture
-def B_zigzag():
-    return np.array([
-        -26, -3, 0, -3, -2, -6, 2, -4,
-        1, -3, 1, 1, 5, 1, 2, -1,
-        1, -1, 2, 0, 0, 0, 0, 0,
-        -1, -1, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0, 0, 0, 0, 0,
     ])
 
 
@@ -110,93 +82,3 @@ def test_scipy_idct_dct_same_as_pyjpeg_idct_dct_wikipedia_example(g):
         pyjpeg.idct(pyjpeg.dct(g)),
         fftpack.idctn(fftpack.dctn(g, norm='ortho'), norm='ortho')
     )
-
-
-@pytest.mark.parametrize(
-    "bits,expected",
-    [('0', 0),
-     ('1', 1),
-     ('10', 2),
-     ('11', 3),
-     ('100', 4),
-     ('101', 5),
-     ('110', 6),
-     ('111', 7),
-     ('1000', 8),
-     ('1001', 9),
-     ('1010', 10),
-     ('1011', 11),
-     ('1100', 12),
-     ('1101', 13),
-     ('1110', 14),
-     ('1111', 15)]
-)
-def test_bits_to_int_uptill_fifteen(bits, expected):
-    assert huffman.bits_to_int(bits) == expected
-
-
-@pytest.mark.parametrize(
-    "bits,expected",
-    [('11101001', 233),
-     ('1010110101', 693),
-     ('1111000100', 964),
-     ('1001111001', 633),
-     ('1101101101', 877)]
-)
-def test_bits_to_int_large_numbers(bits, expected):
-    assert huffman.bits_to_int(bits) == expected
-
-
-def test_zfill_bits_to_int():
-    bits = '1010'
-    assert huffman.bits_to_int(bits) == huffman.bits_to_int(bits.zfill(10))
-
-
-@pytest.mark.parametrize(
-    "number,expected",
-    [(0, '0'),
-     (1, '1'),
-     (2, '10'),
-     (3, '11'),
-     (4, '100'),
-     (5, '101'),
-     (6, '110'),
-     (7, '111'),
-     (8, '1000'),
-     (9, '1001'),
-     (10, '1010'),
-     (11, '1011'),
-     (12, '1100'),
-     (13, '1101'),
-     (14, '1110'),
-     (15, '1111')]
-)
-def test_int_to_bits_uptill_fifteen(number, expected):
-    assert huffman.int_to_bits(number) == expected
-
-
-@pytest.mark.parametrize(
-    "number,expected",
-    [(233, '11101001'),
-     (693, '1010110101'),
-     (964, '1111000100'),
-     (633, '1001111001'),
-     (877, '1101101101')]
-)
-def test_int_to_bits_large_numbers(number, expected):
-    assert huffman.int_to_bits(number) == expected
-
-
-def test_zigzag_patch(B, B_zigzag):
-    out = huffman.zigzag_patch(B)
-    np.testing.assert_array_equal(out, B_zigzag)
-
-
-def test_huffman_encode_decode_b(B):
-    out = huffman.decode(huffman.encode(B.flatten()))
-    np.testing.assert_array_equal(out, B.flatten())
-
-
-def test_huffman_encode_decode_b_zigzag(B_zigzag):
-    out = huffman.decode(huffman.encode(B_zigzag))
-    np.testing.assert_array_equal(out, B_zigzag)
