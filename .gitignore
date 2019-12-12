@@ -2,3 +2,8 @@ pyjpeg.egg-info/
 .DS_Store
 images/*
 docs/pydata-eindhoven-talk-proposal.md
+.eggs/
+.coverage
+coverage/
+*.paint
+.vscode/
