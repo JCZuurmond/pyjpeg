@@ -2,7 +2,8 @@ import numpy as np
 import pytest
 from scipy import fftpack
 
-from pyjpeg import pyjpeg
+import pyjpeg as jpeg
+import pyjpeg.freq
 
 
 @pytest.fixture
@@ -36,49 +37,49 @@ def G():
 
 
 def test_dct_zeros_block_all_zeros():
-    dct = pyjpeg.dct(np.zeros((8, 8)))
+    dct = jpeg.freq.dct(np.zeros((8, 8)))
     np.testing.assert_array_equal(dct, 0)
 
 
 def test_idct_of_dct_is_identitcal_to_input():
-    idct = pyjpeg.idct(pyjpeg.dct(np.zeros((8, 8))))
+    idct = jpeg.freq.idct(jpeg.freq.dct(np.zeros((8, 8))))
     np.testing.assert_array_equal(idct, np.zeros((8, 8)))
 
 
 def test_dct_raises_value_error_wrong_patch_size():
     with pytest.raises(ValueError):
-        pyjpeg.dct(np.zeros((3, 3)))
+        jpeg.freq.dct(np.zeros((3, 3)))
 
 
 def test_idct_raises_value_error_wrong_patch_size():
     with pytest.raises(ValueError):
-        pyjpeg.idct(np.zeros((3, 3)))
+        jpeg.freq.idct(np.zeros((3, 3)))
 
 
 def test_dct_wikipedia_example(g, G):
-    assert (pyjpeg.dct(g) - G < 1e-2).all()
+    assert (jpeg.freq.dct(g) - G < 1e-2).all()
 
 
 def test_idct_dct_wikipedia_example(g):
-    np.testing.assert_array_almost_equal(pyjpeg.idct(pyjpeg.dct(g)), g)
+    np.testing.assert_array_almost_equal(jpeg.freq.idct(jpeg.freq.dct(g)), g)
 
 
 def test_scipy_dct_same_as_pyjpeg_dct_wikipedia_example(g):
     np.testing.assert_array_almost_equal(
-        pyjpeg.dct(g),
+        jpeg.freq.dct(g),
         fftpack.dctn(g, norm='ortho')
     )
 
 
 def test_scipy_idct_same_as_pyjpeg_dct_wikipedia_example(G):
     np.testing.assert_array_almost_equal(
-        pyjpeg.idct(G),
+        jpeg.freq.idct(G),
         fftpack.idctn(G, norm='ortho')
     )
 
 
 def test_scipy_idct_dct_same_as_pyjpeg_idct_dct_wikipedia_example(g):
     np.testing.assert_array_almost_equal(
-        pyjpeg.idct(pyjpeg.dct(g)),
+        jpeg.freq.idct(jpeg.freq.dct(g)),
         fftpack.idctn(fftpack.dctn(g, norm='ortho'), norm='ortho')
     )
