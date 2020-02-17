@@ -2,8 +2,7 @@ import numpy as np
 import pytest
 from scipy import fftpack
 
-import pyjpeg as jpeg
-import pyjpeg.freq
+import jpeg.freq
 
 
 @pytest.fixture
