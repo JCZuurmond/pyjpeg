@@ -42,7 +42,7 @@ setuptools.setup(
     description='JPEG implementation in Python.',
     url='https://github.com/JCZuurmond/pyjpeg',
     license='Open source',
-    packages=['pyjpeg'],
+    packages=['jpeg'],
     version='0.1.0',
     install_requires=requirements,
     setup_requires=setup_requirements,
