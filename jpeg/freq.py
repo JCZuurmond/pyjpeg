@@ -4,22 +4,22 @@ import numpy as np
 ONE_OVER_SQRT_TWO = 2 ** (-0.5)
 
 
-def _dct_cos(pixel: int, spatial_frequency: int) -> float:
+def discrete_cosine(freq: int, *, patch_size: int = 8) -> float:
     """
-    Get the cosine value used in the (inverse) DCT.
+    Discrete cosine value for a certain frequency
 
     Parameters
     ----------
-    pixel : int
-        Pixel location.
-    spatial_frequency : int
-        Spatial frequency.
+    freq : int
+        The frequency
+    patch_size : int, optional (default : 8)
+        The patch size.
 
     Returns
     -------
-    float : The cosine value for the (inverse) DCT.
+    float : The discrete cosine value.
     """
-    return np.cos(((2 * pixel + 1) * spatial_frequency * np.pi) / 16)
+    return np.cos(freq * (np.arange(patch_size) + .5) * np.pi / 8)
 
 
 def _normalization_constant(value: int) -> float:
