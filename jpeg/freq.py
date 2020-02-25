@@ -66,7 +66,7 @@ def discrete_cosine_filter(
     np.ndarray : The discrete cosine filter.
     """
     dc_ver = discrete_cosine(freq_ver).reshape((-1, 1))
-    dc_hor = discrete_cosine(freq_hor).reshape((-1, 1))
+    dc_hor = discrete_cosine(freq_hor).reshape((1, -1))
     c = normalization_constant(freq_ver) * normalization_constant(freq_hor)
     return .25 * c * (dc_ver @ dc_hor)
 
@@ -155,14 +155,14 @@ def apply_filters(
     -------
     np.array : The results of the filters.
     """
-    if not any(filters):
+    if len(filters) == 0:
         raise ValueError('Expecting at least one filter.')
     return np.array([apply_filter(patch, filter_) for filter_ in filters])
 
 
 def transform(
     im: np.ndarray,
-    filters_: List[Union[Callable, np.ndarray]],
+    filters: List[Union[Callable, np.ndarray]],
     *,
     patch_size: int = 8
 ) -> np.ndarray:
@@ -173,7 +173,7 @@ def transform(
     ----------
     im : np.ndarray
         The image to transform.
-    filters_ : List[Union[Callable, np.ndarray]]
+    filters : List[Union[Callable, np.ndarray]]
         The filters to apply to the image.
     patch_size : int, optional (default : 8)
         The patch size.
@@ -182,11 +182,11 @@ def transform(
     -------
     np.ndarray : The transformed image.
     """
-    if not len(filters_) == patch_size ** 2:
+    if not len(filters) == patch_size ** 2:
         raise ValueError('Expecting as many filters as the len of a patch.')
 
     im_transformed = [
-        apply_filters(patch, *filters_).reshape(patch_size, patch_size)
+        apply_filters(patch, *filters).reshape(patch_size, patch_size)
         for patch in generate_patches(im, patch_size=patch_size)
     ]
 
