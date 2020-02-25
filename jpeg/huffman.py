@@ -81,6 +81,31 @@ def zigzag_patch(patch: np.ndarray) -> np.array:
     ])
 
 
+def izigzag_patch(vector: np.array) -> np.ndarray:
+    """
+    Inverse of :func:zigzag_patch.
+
+    Parameters
+    ----------
+    vector : np.array
+        The vector to be converted in a 8 by 8 patch
+
+    Returns
+    -------
+    np.ndarray : The 8 by 8 patch.
+    """
+    if not len(vector) == 64:
+        raise ValueError('Only implemented for a vector of length 64')
+
+    indices = [
+        0, 1, 5, 6, 14, 15, 27, 28, 2, 4, 7, 13, 16, 26, 29, 42, 3, 8,
+        12, 17, 25, 30, 41, 43, 9, 11, 18, 24, 31, 40, 44, 53, 10, 19, 23, 32,
+        39, 45, 52, 54, 20, 22, 33, 38, 46, 51, 55, 60, 21, 34, 37, 47, 50, 56,
+        59, 61, 35, 36, 48, 49, 57, 58, 62, 63
+    ]
+    return vector[indices].reshape(8, 8)
+
+
 def encode(sequence: Iterable) -> str:
     """
     Encode a sequence with Huffman (entropy) encoding.
