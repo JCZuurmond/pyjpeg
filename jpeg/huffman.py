@@ -230,3 +230,30 @@ def compress(image: np.ndarray, Q: Union[float, np.ndarray] = 1) -> str:
             dct_flatten = zigzag_patch(low_pass)
             code += encode(dct_flatten.astype(int))
     return code
+
+
+def decompress(sequence: str) -> np.ndarray:
+    """
+    Decompress a compressed image.
+
+    Parameters
+    ----------
+    sequence : str
+        TODO
+
+    Returns
+    -------
+    np.ndarray : TODO
+    """
+    height = bits_to_int(sequence[:8])
+    width = bits_to_int(sequence[8: 16])
+    im = np.zeros((height, width))
+
+    i = 0
+    byte_blocks = sequence[16:].split('0' * 8)
+    for y in range(0, im.shape[0], 8):
+        for x in range(0, im.shape[1], 8):
+            im[y: y + 8, x: x + 8] = decode(byte_blocks[i] + '0' * 8)
+            i += 1
+
+    return im + 128
