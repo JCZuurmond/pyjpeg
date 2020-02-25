@@ -1,10 +1,13 @@
 from typing import (
-    Tuple,
     Callable,
+    List,
+    Tuple,
     Union,
 )
 
 import numpy as np
+
+from .utils import generate_patches
 
 
 ONE_OVER_SQRT_TWO = 2 ** (-0.5)
@@ -113,6 +116,43 @@ def apply_filters(
     if not any(filters):
         raise ValueError('Expecting at least one filter.')
     return np.array([apply_filter(patch, filter_) for filter_ in filters])
+
+
+def transform(
+    im: np.ndarray,
+    filters_: List[Union[Callable, np.ndarray]],
+    *,
+    patch_size: int = 8
+) -> np.ndarray:
+    """
+    Transform an image using the filters.
+
+    Parameters
+    ----------
+    im : np.ndarray
+        The image to transform.
+    filters_ : List[Union[Callable, np.ndarray]]
+        The filters to apply to the image.
+    patch_size : int, optional (default : 8)
+        The patch size.
+
+    Returns
+    -------
+    np.ndarray : The transformed image.
+    """
+    if not len(filters_) == patch_size ** 2:
+        raise ValueError('Expecting as many filters as the len of a patch.')
+
+    im_transformed = [
+        apply_filters(patch, *filters_).reshape(patch_size, patch_size)
+        for patch in generate_patches(im, patch_size=patch_size)
+    ]
+
+    n_hor_patches = int(im.shape[1] / patch_size)
+    return np.vstack([
+        np.hstack(im_transformed[y * n_hor_patches: (y + 1) * n_hor_patches])
+        for y in range(int(im.shape[0] / patch_size))
+    ])
 
 
 def _dct_spatial_frequency(
