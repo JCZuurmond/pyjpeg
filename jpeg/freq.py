@@ -28,6 +28,22 @@ def discrete_cosine(freq: int, *, patch_size: int = 8) -> float:
     return np.cos(freq * (np.arange(patch_size) + .5) * np.pi / 8)
 
 
+def normalization_constant(value: int) -> float:
+    """
+    Normalization constant.
+
+    Parameters
+    ----------
+    value : int
+        Given the value get the normalization constant.
+
+    Returns
+    -------
+    float : The normalization constant.
+    """
+    return ONE_OVER_SQRT_TWO if value == 0 else 1.
+
+
 def discrete_cosine_filter(
     freq_ver: int,
     freq_hor: int
@@ -97,22 +113,6 @@ def apply_filters(
     if not any(filters):
         raise ValueError('Expecting at least one filter.')
     return np.array([apply_filter(patch, filter_) for filter_ in filters])
-
-
-def normalization_constant(value: int) -> float:
-    """
-    Normalization constant.
-
-    Parameters
-    ----------
-    value : int
-        Given the value get the normalization constant.
-
-    Returns
-    -------
-    float : The normalization constant.
-    """
-    return ONE_OVER_SQRT_TWO if value == 0 else 1.
 
 
 def _dct_spatial_frequency(
