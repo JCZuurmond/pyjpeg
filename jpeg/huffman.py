@@ -172,7 +172,7 @@ def decode(code: str) -> np.array:
 
     sequence_idx = 0
     code_idx = 0
-    while code_idx < len(code):
+    while True:
         runlength = bits_to_int(code[code_idx: code_idx + 4])
         n_bits = bits_to_int(code[code_idx + 4: code_idx + 8])
 
@@ -188,4 +188,4 @@ def decode(code: str) -> np.array:
         code_idx += 9 + n_bits
         sequence_idx += 1
 
-    return sequence
+    return sequence.reshape(8, 8)
