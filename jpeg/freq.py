@@ -22,7 +22,31 @@ def discrete_cosine(freq: int, *, patch_size: int = 8) -> float:
     return np.cos(freq * (np.arange(patch_size) + .5) * np.pi / 8)
 
 
-def _normalization_constant(value: int) -> float:
+def discrete_cosine_filter(
+    freq_ver: int,
+    freq_hor: int
+) -> np.ndarray:
+    """
+    Create a discrete cosine filter.
+
+    Parameters
+    ----------
+    freq_ver : int
+        The vertical frequency.
+    freq_hor : int
+        The horizontal frequency.
+
+    Returns
+    -------
+    np.ndarray : The discrete cosine filter.
+    """
+    dc_ver = discrete_cosine(freq_ver).reshape((-1, 1))
+    dc_hor = discrete_cosine(freq_hor).reshape((-1, 1))
+    c = normalization_constant(freq_ver) * normalization_constant(freq_hor)
+    return .25 * c * (dc_ver @ dc_hor)
+
+
+def normalization_constant(value: int) -> float:
     """
     Normalization constant.
 
