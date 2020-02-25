@@ -2,7 +2,7 @@ import numpy as np
 import pytest
 from numpy.testing import assert_array_equal
 
-from jpeg import huffman
+from jpeg import huffman, utils
 
 
 @pytest.fixture
@@ -46,12 +46,12 @@ def test_decode_all_zeros():
 
 
 def test_zigzag_patch(B, B_zigzag):
-    out = huffman.zigzag_patch(B)
+    out = utils.zigzag_patch(B)
     np.testing.assert_array_equal(out, B_zigzag)
 
 
 def test_izigzag_patch(B, B_zigzag):
-    out = huffman.izigzag_patch(B_zigzag)
+    out = utils.izigzag_patch(B_zigzag)
     np.testing.assert_array_equal(out, B)
 
 
