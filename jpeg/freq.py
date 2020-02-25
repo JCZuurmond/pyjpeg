@@ -28,7 +28,7 @@ def discrete_cosine(freq: int, *, patch_size: int = 8) -> float:
     -------
     float : The discrete cosine value.
     """
-    return np.cos(freq * (np.arange(patch_size) + .5) * np.pi / 8)
+    return np.cos(freq * (np.arange(patch_size) + .5) * np.pi / patch_size)
 
 
 def normalization_constant(value: int) -> float:
@@ -71,6 +71,48 @@ def discrete_cosine_filter(
     return .25 * c * (dc_ver @ dc_hor)
 
 
+def inverse_discrete_cosine(pix: int, *, patch_size: int = 8) -> float:
+    """
+    The inverse discrete cosine values.
+
+    Parameters
+    ----------
+    pix : int
+        The pixel location.
+    patch_size : int, optional (default : 8)
+        The patch size.
+
+    Returns
+    -------
+    float : The inverse discrete cosine value..
+    """
+    return np.cos(np.arange(patch_size) * (pix + .5) * np.pi / patch_size)
+
+
+def inverse_discrete_cosine_filter(pix_ver: int, pix_hor: int) -> np.ndarray:
+    """
+    The inverse discrete cosine filter.
+
+    Parameters
+    ----------
+    pix_ver : int
+        The horizontal discrete cosine filters.
+    pix_hor : int
+        The vertical discrete cosine filters.
+
+    Returns
+    -------
+    np.ndarray : The inverse discrete cosine filters.
+    """
+    idc_ver = inverse_discrete_cosine(pix_ver).reshape((-1, 1))
+    idc_hor = inverse_discrete_cosine(pix_hor).reshape((1, -1))
+    c_ver = np.array(
+        [normalization_constant(p) for p in range(8)]).reshape((-1, 1))
+    c_hor = c_ver.copy().reshape((1, -1))
+    c = c_ver @ c_hor
+    return .25 * c * (idc_ver @ idc_hor)
+
+
 def apply_filter(
     patch: np.ndarray,
     filter_: Union[Callable, np.ndarray]
@@ -97,7 +139,7 @@ def apply_filter(
 
 def apply_filters(
     patch: np.ndarray,
-    *filters: Tuple[Union[Callable, np.ndarra]],
+    *filters: Tuple[Union[Callable, np.ndarray]],
 ) -> np.array:
     """
     Apply multiple filters to a patch.
@@ -175,3 +217,25 @@ def dct(im: np.ndarray) -> np.ndarray:
         for y in range(8)
     ]
     return transform(im - 128, dc_filters)
+
+
+def idct(im_dct: np.ndarray) -> np.ndarray:
+    """
+    The inverse discrete cosine of an image.
+
+    Parameters
+    ----------
+    im_dct : np.ndarray
+        The discrete cosine transformed image.
+
+    Returns
+    -------
+    np.ndarray : The image transformed back.
+    """
+    idc_filters = [
+        inverse_discrete_cosine_filter(u, v)
+        for u in range(8)
+        for v in range(8)
+    ]
+
+    return transform(im_dct, idc_filters) + 128
