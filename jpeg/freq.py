@@ -1,3 +1,9 @@
+from typing import (
+    Tuple,
+    Callable,
+    Union,
+)
+
 import numpy as np
 
 
@@ -44,6 +50,53 @@ def discrete_cosine_filter(
     dc_hor = discrete_cosine(freq_hor).reshape((-1, 1))
     c = normalization_constant(freq_ver) * normalization_constant(freq_hor)
     return .25 * c * (dc_ver @ dc_hor)
+
+
+def apply_filter(
+    patch: np.ndarray,
+    filter_: Union[Callable, np.ndarray]
+) -> Union[float, np.ndarray]:
+    """
+    Apply a filter to a patch.
+
+    Parameters
+    ----------
+    patch : np.ndarray
+        The patch.
+    filter_ : Union[Callable, np.ndarray]
+        The filter to be applied to the patch
+
+    Returns
+    -------
+    Union[float, np.ndarray] : The output of the filter.
+    """
+    if callable(filter_):
+        return filter_(patch)
+    else:
+        return (patch * filter_).sum()
+
+
+def apply_filters(
+    patch: np.ndarray,
+    *filters: Tuple[Union[Callable, np.ndarra]],
+) -> np.array:
+    """
+    Apply multiple filters to a patch.
+
+    Parameters
+    ----------
+    patch : np.ndarray
+        The patch to which the filter is applied.
+    *filters : Tuple[Union[Callable, np.ndarray]
+        The filters to be applied.
+
+    Returns
+    -------
+    np.array : The results of the filters.
+    """
+    if not any(filters):
+        raise ValueError('Expecting at least one filter.')
+    return np.array([apply_filter(patch, filter_) for filter_ in filters])
 
 
 def normalization_constant(value: int) -> float:
