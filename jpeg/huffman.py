@@ -1,15 +1,10 @@
-from typing import (
-    Iterable,
-    Union,
-)
+from typing import Iterable
 
 import numpy as np
 
-from .freq import dct
 from .utils import (
     bits_to_int,
     int_to_bits,
-    zigzag_patch,
 )
 
 
@@ -108,66 +103,3 @@ def decode(code: str, *, remainder: bool = False) -> np.array:
         return sequence, code[code_idx:]
     else:
         return sequence
-
-
-def compress(image: np.ndarray, Q: Union[float, np.ndarray] = 1) -> str:
-    """
-    Compress an image.
-
-    Parameters
-    ----------
-    image : np.ndarray
-        The 2D image. The dimensions should be a multiple of 8.
-    Q : Union[float, np.ndarray] (default : 1)
-        Quantization table used for compression.
-
-    Returns
-    -------
-    str : The byte sequence of the compressed image.
-    """
-    if len(image.shape) != 2:
-        raise ValueError('Only implemented for 2D image.')
-    if (image.shape[0] % 8 != 0) or (image.shape[1] % 8 != 0):
-        raise ValueError('Only implemented for images where the dimensions '
-                         'are multiple of 8')
-
-    # A zero centered images matches the discrete cosine filters better
-    image = image - 128
-
-    code = int_to_bits(image.shape[0]).zfill(8)
-    code += int_to_bits(image.shape[1]).zfill(8)
-    for y in range(0, image.shape[0], 8):
-        for x in range(0, image.shape[1], 8):
-            patch = image[y: y + 8, x: x + 8]
-            dct_patch = dct(patch)
-            low_pass = dct_patch / Q
-            dct_flatten = zigzag_patch(low_pass)
-            code += encode(dct_flatten.astype(int))
-    return code
-
-
-def decompress(sequence: str) -> np.ndarray:
-    """
-    Decompress a compressed image.
-
-    Parameters
-    ----------
-    sequence : str
-        TODO
-
-    Returns
-    -------
-    np.ndarray : TODO
-    """
-    height = bits_to_int(sequence[:8])
-    width = bits_to_int(sequence[8: 16])
-    im = np.zeros((height, width))
-
-    i = 0
-    byte_blocks = sequence[16:].split('0' * 8)
-    for y in range(0, im.shape[0], 8):
-        for x in range(0, im.shape[1], 8):
-            im[y: y + 8, x: x + 8] = decode(byte_blocks[i] + '0' * 8)
-            i += 1
-
-    return im + 128
