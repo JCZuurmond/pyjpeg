@@ -1,7 +1,12 @@
 import math
-from typing import Iterable
+from typing import (
+    Iterable,
+    Union,
+)
 
 import numpy as np
+
+from .freq import dct
 
 
 def bits_to_int(bits: str) -> int:
@@ -189,3 +194,39 @@ def decode(code: str) -> np.array:
         sequence_idx += 1
 
     return sequence.reshape(8, 8)
+
+
+def compress(image: np.ndarray, Q: Union[float, np.ndarray] = 1) -> str:
+    """
+    Compress an image.
+
+    Parameters
+    ----------
+    image : np.ndarray
+        The 2D image. The dimensions should be a multiple of 8.
+    Q : Union[float, np.ndarray] (default : 1)
+        Quantization table used for compression.
+
+    Returns
+    -------
+    str : The byte sequence of the compressed image.
+    """
+    if len(image.shape) != 2:
+        raise ValueError('Only implemented for 2D image.')
+    if (image.shape[0] % 8 != 0) or (image.shape[1] % 8 != 0):
+        raise ValueError('Only implemented for images where the dimensions '
+                         'are multiple of 8')
+
+    # A zero centered images matches the discrete cosine filters better
+    image = image - 128
+
+    code = int_to_bits(image.shape[0]).zfill(8)
+    code += int_to_bits(image.shape[1]).zfill(8)
+    for y in range(0, image.shape[0], 8):
+        for x in range(0, image.shape[1], 8):
+            patch = image[y: y + 8, x: x + 8]
+            dct_patch = dct(patch)
+            low_pass = dct_patch / Q
+            dct_flatten = zigzag_patch(low_pass)
+            code += encode(dct_flatten.astype(int))
+    return code
