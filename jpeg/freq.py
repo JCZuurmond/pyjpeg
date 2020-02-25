@@ -153,3 +153,25 @@ def transform(
         np.hstack(im_transformed[y * n_hor_patches: (y + 1) * n_hor_patches])
         for y in range(int(im.shape[0] / patch_size))
     ])
+
+
+def dct(im: np.ndarray) -> np.ndarray:
+    """
+    Get the discrete cosine transform of an image.
+
+    Parameters
+    ----------
+    im : np.ndarray
+        The image (to be transformed).
+
+    Returns
+    -------
+    np.ndarray : The image transformed using the discrete cosine transform
+    filters.
+    """
+    dc_filters = [
+        discrete_cosine_filter(x, y)
+        for x in range(8)
+        for y in range(8)
+    ]
+    return transform(im - 128, dc_filters)
