@@ -124,6 +124,11 @@ def test_zigzag_patch(B, B_zigzag):
     np.testing.assert_array_equal(out, B_zigzag)
 
 
+def test_izigzag_patch(B, B_zigzag):
+    out = huffman.izigzag_patch(B_zigzag)
+    np.testing.assert_array_equal(out, B)
+
+
 def test_huffman_encode_decode_b(B):
     out = huffman.decode(huffman.encode(B.flatten()))
     np.testing.assert_array_equal(out, B.flatten())
