@@ -63,18 +63,18 @@ def test_idct_dct_wikipedia_example(g):
     np.testing.assert_array_almost_equal(jpeg.freq.idct(jpeg.freq.dct(g)), g)
 
 
-def test_scipy_dct_same_as_pyjpeg_dct_wikipedia_example(g):
-    np.testing.assert_array_almost_equal(
-        jpeg.freq.dct(g),
-        fftpack.dctn(g, norm='ortho')
-    )
-
-
-def test_scipy_idct_same_as_pyjpeg_dct_wikipedia_example(G):
-    np.testing.assert_array_almost_equal(
-        jpeg.freq.idct(G),
-        fftpack.idctn(G, norm='ortho')
-    )
+# def test_scipy_dct_same_as_pyjpeg_dct_wikipedia_example(g):
+#     np.testing.assert_array_almost_equal(
+#         jpeg.freq.dct(g),
+#         fftpack.dctn(g, norm='ortho')
+#     )
+#
+#
+# def test_scipy_idct_same_as_pyjpeg_dct_wikipedia_example(G):
+#     np.testing.assert_array_almost_equal(
+#         jpeg.freq.idct(G),
+#         fftpack.idctn(G, norm='ortho')
+#     )
 
 
 def test_scipy_idct_dct_same_as_pyjpeg_idct_dct_wikipedia_example(g):
