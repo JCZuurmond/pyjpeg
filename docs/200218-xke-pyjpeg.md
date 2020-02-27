@@ -1,116 +1,80 @@
 slidenumbers: true
 footer: PyData Meetup 26-02-20, Image compression
 
-# Image compression
-# in Python
+# Efficiently store your images
 
 ----
 
-# Learn how to compress the following image
-
-![inline 200%](pictures/lena.png)
-
----
-
-# Before we start coding
-
----
-
-# Let's discuss quantities of data
-
-- Big data;
-- Small data;
-- Huge data;
-- Tiny data;
-- Enormous data;
-
----
-
-# Let's discuss quantities of data
-
-- Big data;
-- Small data;
-- Huge data;
-- Tiny data;
-- Enormous data;
+# Today we own a webshop
 
 ----
 
-# You want big data?
+# Webshop
+
+- Not a small one, but one of similar size as Alibaba or Amazon;
+
+----
+
+# Webshop
+
+- Not a small one, but one of similar size as Alibaba or Amazon;
+- People upload thousands of photos every day;
+	- They need to be stored;
+	- Send to people who request them;
+
+---
+
+# A lot of data (movement) <br> is involved with these images
+
+---
+
+# We are responsible for handling this efficiently
+
+---
+
+# We are responsible for handling this efficiently
+## A.k.a. save money 
+
+---
+
+## Let's discuss some obvious examples
 
 ![inline](pictures/lena-twice.png)
 
+^ Some duplicates might be needed to avoid data loss and have short response
+time across the globe
+
 ---
 
-# Big data you will get
+## Unnecessary duplicates can be removed!
 
 ![inline](pictures/lena-hundred.png)
 
 ---
 
-# When do we have "more" data?
-
----
-
-# When do we have "more" data?
-
-- Not just more samples
-
----
-
-# When do we have "more" data?
-
-- Not just more samples;
-- The samples should be different from each other;
-
----
-
-# But, this is not useful either
-
-![inline](pictures/lena-rot.png)
-
----
-
-# When do we have "more" data?
-
-- Not just more samples;
-- ~~The samples should be different from each other;~~
-- The samples should contain different "information";
-
----
-
-# But, this is not useful either
+# Only relevant images are kept
 
 ![inline](pictures/lena-noise.png)
 
 ---
 
-# When do we have "more" data?
+## The question is: <br>What is useful information?
 
-- Not just more samples;
-- ~~The samples should be different from each other;~~
-- ~~The samples should contain different "information";~~
-- The samples should contain different "useful information";
-
----
-
-# Useful information
-
-- Different meaning for:
-	- Different types of data;
-	- Different uses for the data;
+- Not useful are:
+	- unnecessary duplicate values;
+	- "meaningless" signals;
 
 ---
 
-# Useful information
-
-- Different meaning for:
-	- **Different types of data;**
-	- Different uses for the data;
+## Besides removing pictures as a whole, can we discard information within a picture?
 
 ---
 
-# Images
+# Can we compress images?
+
+---
+
+# How (not) to compress images
 
 ![inline 200%](pictures/lena.png)
 
@@ -191,21 +155,98 @@ $$C$$ = channels
 
 ---
 
-# What is <br> "useful information" within images?
+# So, how should we compress images?
 
 ---
 
-# Images are autocorrelated data
+![inline](../images/schematic-compression.png)
+
+---
+
+![inline](../images/schematic-compression-perfect.png)
+
+---
+
+![inline](../images/schematic-compression-naive.png)
+
+---
+
+![inline](../images/schematic-compression-better.png)
+
+---
+
+![inline](../images/schematic-compression-ok.png)
+
+---
+
+# So, how to compress images?
+
+- maybe we can do something with:
+	- duplicate values;
+	- "meaningless" signals;
+
+---
+
+# "Duplicate" values
 
 ![inline](pictures/lena-areas.png)
 
 ---
 
-# We need to go to the frequency domain!
+# Images are autocorrelated
+
+---
+
+# Downsampling 
+## 6% of original image size
+
+![inline](../images/lena-downsampled-4.png)
+
+---
+
+# Downsampling
+## 1.5% of original image size
+
+![inline](../images/lena-downsampled-8.png)
+
+---
+
+# Can we extract these autocorrelated signals?
+
+---
+
+# Maybe with frequencies!
 
 ---
 
 # Discrete cosine transform
+
+
+---
+
+# Convolution[^1]
+
+![inline](https://neurohive.io/wp-content/uploads/2018/07/convolutional-neural-network.gif)
+
+[^1]: https://zhenye-na.github.io/2018/11/30/cnn-deep-leearning-ai-week1.html
+
+---
+
+# An example[^2]
+
+![inline](https://miro.medium.com/max/1026/1*cTEp-IvCCUYPTT0QpE3Gjg@2x.png)
+
+
+[^2]: https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2
+
+---
+
+# An example[^2]
+
+![inline](https://cdn-media-1.freecodecamp.org/images/Htskzls1pGp98-X2mHmVy9tCj0cYXkiCrQ4t)
+
+^ https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2
+
 
 ---
 
@@ -363,26 +404,89 @@ $$C$$ = channels
 
 ---
 
-# Convolution[^1]
+# Frequency values
 
-![inline](https://neurohive.io/wp-content/uploads/2018/07/convolutional-neural-network.gif)
-
-[^1]: https://zhenye-na.github.io/2018/11/30/cnn-deep-leearning-ai-week1.html
+![inline](../images/image-frequencies-pixel-values.png)
 
 ---
 
-# An example[^2]
+## Here we see more duplicates! 
+### There are many zeros
 
-![inline](https://miro.medium.com/max/1026/1*cTEp-IvCCUYPTT0QpE3Gjg@2x.png)
-
-
-[^2]: https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2
+![inline](../images/image-frequencies-pixel-values.png)
 
 ---
 
-# An example[^2]
+# We can use this in our encoding
 
-![inline](https://cdn-media-1.freecodecamp.org/images/Htskzls1pGp98-X2mHmVy9tCj0cYXkiCrQ4t)
+--- 
 
-^ https://towardsdatascience.com/applied-deep-learning-part-4-convolutional-neural-networks-584bc134c1e2
+![inline](pictures/encode-values.png)
 
+---
+
+# So, how to compress images?
+
+- maybe we can do something with:
+	- ~~duplicate values;~~
+	- "meaningless" signals;
+
+---
+
+# Remember the filters?
+
+![inline](../images/dct_2d_7_7.png)
+
+---
+
+![300%](pictures/all-filters.png)
+
+--- 
+
+![300%](pictures/all-filters-dimensions.png)
+
+---
+
+![300%](pictures/all-filters-crossed.png)
+
+---
+
+# Remove higher frequencies
+
+---
+
+# Reduce matrix
+
+![inline](pictures/quantization-dimensions.png) 
+
+---
+
+# Reduce matrix
+
+![inline](pictures/quantization-dimensions-areas.png) 
+
+---
+
+# Skip the implementation of the reverse logic
+
+---
+
+# Compressed image
+
+![inline](../images/lena-jpg.png)
+
+---
+
+# Side by side
+
+![inline 300%](pictures/lena-side-by-side.png)
+
+---
+
+# Side by side
+
+![inline 300%](pictures/lena-side-by-side-areas.png)
+
+--- 
+
+# With a reduction of 85%!!!
